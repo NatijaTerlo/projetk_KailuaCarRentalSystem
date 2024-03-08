@@ -1,0 +1,56 @@
+USE Kailuacarrental;
+DROP TABLE IF EXISTS Biler;
+
+CREATE TABLE biler (
+    BilId INT AUTO_INCREMENT PRIMARY KEY,
+    Mærke VARCHAR(55),
+    model varchar(25),
+    Brændstoftype VARCHAR(50),
+    Registreringsnummer VARCHAR(50) UNIQUE,
+    FørsteRegistrering DATE,
+    Kilometertæller INT,
+    Kategori ENUM('Luksus', 'Familie', 'Sport')
+);
+
+CREATE TABLE Lejere (
+    LejerId INT AUTO_INCREMENT PRIMARY KEY,
+    Navn VARCHAR(50),
+    Adresse VARCHAR(50),
+    Postnummer INT,
+    ByNavn VARCHAR(60),
+    Mobiltelefon VARCHAR(50),
+    Telefon VARCHAR(50),
+    Email VARCHAR(10),
+    KørekortNummer VARCHAR(50) UNIQUE,
+    KørekortUdstedelsesdato DATE
+);
+
+
+CREATE TABLE Lejekontrakter (
+    KontraktId INT AUTO_INCREMENT PRIMARY KEY,
+    LejerId INT,
+    Registreringsnummer VARCHAR(10),
+    FraDatoTid DATETIME,
+    TilDatoTid DATETIME,
+    MaxKm INT,
+    StartKm INT,
+    FOREIGN KEY (LejerId) REFERENCES Lejere(LejerId),
+    FOREIGN KEY (Registreringsnummer) REFERENCES Biler(Registreringsnummer)
+);
+
+INSERT INTO Biler (Registreringsnummer, Mærke, model, Brændstoftype, FørsteRegistrering, Kilometertæller, Kategori) VALUES
+('AB12345', 'Tesla', 'Model S', 'El', '2020-05-01', 50000, 'Luksus'),
+('BC23456', 'Volvo', 'XC90', 'Diesel', '2018-08-01', 30000, 'Familie'),
+('CD34567', 'Porsche', '911', 'Benzin', '2019-03-01', 20000, 'Sport');
+
+
+INSERT INTO Lejere (Navn, Adresse, Postnummer, ByNavn, Mobiltelefon, Telefon, Email, KørekortNummer, KørekortUdstedelsesdato) VALUES ('Jens Jensen', 'Vejnavn 1', 1234, 'Bynavn', '12345678', '87654321', 'jens@example.com', 'XX123456', '2015-06-15');
+
+INSERT INTO Lejekontrakter (LejerId, Registreringsnummer, FraDatoTid, TilDatoTid, MaxKm, StartKm) VALUES (1, 'AB12345', '2024-03-01 10:00:00', '2024-03-15 10:00:00', 1500, 50000);
+
+describe biler;
+describe lejere;
+describe Lejekontrakt;
+
+
+
